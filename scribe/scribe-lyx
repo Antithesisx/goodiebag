@@ -1,0 +1,16 @@
+#!/bin/bash
+# Check how many arguments were passed.
+if ! [[ $# -eq 1 ]]; then
+	echo "Usage: scribe <filename>."
+	exit
+fi
+
+# If the file doesn't exist, make a directory for it.
+if ! [[ -f "$1/$1.lyx" ]]; then
+	mkdir "$1"
+fi
+
+nohup revcontrol "$1/$1.lyx" & # Enable revision control.
+lyx "$1/$1.lyx" # Edit the file using Lyx.
+lyx --export text "$1/$1.lyx" # Export to text.
+mv "$1/$1.txt" "$1/$1"
