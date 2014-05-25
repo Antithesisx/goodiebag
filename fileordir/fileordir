@@ -1,0 +1,24 @@
+#!/bin/sh
+
+# Check if at least 3 arguments are given
+if [[ $# < 3 ]]; then
+	echo "Usage: $0 \"command A\" \"command B\" path [ path2 path3 etc. ]"
+fi
+
+# Do the function for every path given.
+for i in ${*:3}
+do
+	# If it's a file. perform command A on it.
+	if	[ -f "$i" ]
+		then "$1" "$i"
+
+		# If it's a directory perform command B on it.
+	elif	[ -d "$i" ]
+		then "$2" "$i"
+	
+		# If it's neither, complain.
+	else
+		echo "Error: argument is not a file or directory."
+	fi
+done
+

@@ -1,0 +1,15 @@
+#!/bin/bash
+# Check if only two arguments were given, and if the latter is a directory.
+if [[ $# -ne 2 ]] || [[ ! -d $2 ]] ; then
+	echo "Usage: rightlink SOURCE DEST where SOURCE is the file to which a link will be created, and DEST is the directory where that link will be placed."
+
+fi
+
+# If SOURCE is a file on the same partition as DEST, create a hardlink.
+if [[ -f $1 ]] && [[ "$(df $1 | tail -n 1 | cut -d " " -f 1)" = "$(df $2 | tail -n 1 | cut -d " " -f 1)" ]] ; then
+	ln "$1" "$2"/
+
+# Otherwise, create a symlink.
+else
+	ln -s "$1" "$2"/
+fi
